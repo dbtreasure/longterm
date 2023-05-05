@@ -30,6 +30,7 @@ async def handle_webhook(
         ))
 
     return {"success": True}
+    
 @app.get("/webhook/new_subscriber")
 async def handle_webhook():
     try:
