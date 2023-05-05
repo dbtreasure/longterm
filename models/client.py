@@ -5,7 +5,7 @@
 from pydantic import BaseModel
 
 class Client(BaseModel):
-    name: str
+    name: str = None
     email: str
     phone: str = None
     goal: str = None

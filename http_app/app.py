@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import Annotated
 from operator import itemgetter
 from models.client import Client
-from http_app.database_config import add_client_from_signup
+from supabase.client import add_client_from_signup, unsubscribe_client
 import json
 
 app = FastAPI()
@@ -28,9 +28,12 @@ async def handle_webhook(
             email=data_email,
             account_status="signup"
         ))
-
+    elif type == "unsubscribe":
+        await unsubscribe_client(Client(
+            email=data_email,
+        ))
     return {"success": True}
-    
+
 @app.get("/webhook/new_subscriber")
 async def handle_webhook():
     try:

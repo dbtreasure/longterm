@@ -1,4 +1,4 @@
-# database_config.py
+# client.py
 
 import requests
 from models.client import Client
@@ -33,5 +33,31 @@ async def add_client_from_signup(client: Client):
             }
         )
         print('Client added to database!')
+    except Exception as e:
+        print(f"Error: {e}")
+
+async def unsubscribe_client(client: Client):
+    try:
+        supabas_anon_key = os.environ.get("SUPABASE_LONGTERM_ANON_KEY")
+
+        supabase_ref = "xizbdysxawruaeujhfpt"
+        supabase_rest_url = f"https://{supabase_ref}.supabase.co/rest/v1"
+
+        print(f"Unsubscribing client \
+            name: {client.name} \
+            email: {client.email}"
+        
+        )
+        response = requests.patch(
+            f"{supabase_rest_url}/clients?email=eq.{client.email}",
+            headers={
+                "apikey": supabas_anon_key,
+                "Authorization": f"Bearer {supabas_anon_key}",
+                "Content-Type": "application/json",
+            },
+            json={
+                "account_status": "unsubscribed"
+            }
+        )
     except Exception as e:
         print(f"Error: {e}")
